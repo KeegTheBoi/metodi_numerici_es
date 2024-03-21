@@ -19,7 +19,7 @@ class FunctionEvaluator:
         self.func = func
         self.x = var
         self.y = self.func(var)
-        self.yobs = obsolete(var) if obsolete != None else self.func(var)
+        self.yobs = obsolete(var) if obsolete is not None else self.func(var)
 
     def plot_err(self, reals, compare=False, what=None, loga=False):
         self.reals = reals
@@ -28,7 +28,7 @@ class FunctionEvaluator:
             plt.xscale('log')
         plt.semilogy(x, relativerr(self.y, reals), 'r')
         if compare:
-            plt.semilogy(self.x, relativerr(self.yobs, reals), 'b:')
+            plt.semilogy(x, relativerr(self.yobs, reals), 'b:')
             plt.legend(["New", "Obsolete"])
         plt.title("Grafico dell'errore relativo di funzioni approssimate")
         plt.show()    
