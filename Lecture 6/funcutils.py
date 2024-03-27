@@ -7,22 +7,23 @@ err_abs = lambda f, g: np.abs(f - g)
 
 class FunctionApprox:
 
-    def __init__(self, sym_expr, interval, real_alfas, x0, prev_x):
+    def __init__(self, sym_expr, interval=None, real_alfas=None, x0=None, prev_x=None, multiplicity=1):
         self.sym_expr = sym_expr
         self.interval = interval
         self.real_alfas = real_alfas
         self.x_sym = sym.Symbol('x')
         self.compute()
-        self.def_get_extr()
-        self.derivative()
+        if interval is not None:
+            self.def_get_extr() 
+        self.derivative(multiplicity)
         self.x0 = x0
         self.prev_x = prev_x
         
     def lambda_map(self, expr):
         return lambdify(self.x_sym, expr, np)
 
-    def derivative(self, multeplicity=1):
-        self.derivate = lambdify(self.x_sym, sym.diff(self.sym_expr, self.x_sym, multeplicity), np)
+    def derivative(self, multiplicity):
+        self.derivate = lambdify(self.x_sym, sym.diff(self.sym_expr, self.x_sym, multiplicity), np)
 
     def compute(self):
         self.func = self.lambda_map(self.sym_expr)

@@ -63,12 +63,17 @@ def bisection(f, a, b, maxit, tolx, tolf=None):
 def regula_falsi(f, a, b, maxit, tolx, given_tolf):
     return non_linear(f, a, b, tolx, maxit, false_mid, over_flow_check, tolf=given_tolf)
 
-def newton(f, x0, tolx, tolf, nmax, fa: FunctionApprox):
+def newton(f, x0, tolx, tolf, nmax, fa: FunctionApprox, multiplicity=1):
     dx = fa.derivate
-    return linear(f, x0, tolx, tolf, nmax, lambda x, f, dx: f(x) / dx(x), dx)
+    return linear(f, x0, tolx, tolf, nmax, lambda x, f, dx: multiplicity * f(x) / dx(x), dx)
+
+def newton_mod_2(f, x0, tolx, tolf, nmax, fa: FunctionApprox):
+    return newton(f, x0, tolx, tolf, nmax, fa, multiplicity=2)
 
 def chord(f, x0, tolx, tolf, nmax, fa: FunctionApprox):
     dx = fa.derivate
+    if fa.b - fa.a == 0:
+        raise ValueError
     m = (fa.func(fa.b) - fa.func(fa.a)) / (fa.b - fa.a)
     return linear(f, x0, tolx, tolf, nmax, lambda x, f, dx: f(x) / m, dx)
 
