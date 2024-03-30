@@ -48,6 +48,17 @@ def linear(f, x0, tolx, tolf, nmax, delta, dx):
     
     def stopping_criteria(k, x):
         return k < nmax and abs(f(x)) >= tolf and abs(delta(x, f, dx)) >= tolx * abs(x) and abs(dx(x)) > tolf
+<<<<<<< HEAD
+=======
+    
+    stream = takewhile( 
+        lambda xk: stopping_criteria(*xk), \
+        enumerate(iterate(lambda xk: xk - delta(xk, f, dx), x0)) \
+    )
+    arr_xk = [v for _, v in stream]
+    if arr_xk == []:
+        print("nothing has been found")
+>>>>>>> 3b6611504922ac2f9c74f539354f0ba1c9928dfd
         
     iter = iterate(lambda xk: xk - delta(xk, f, dx), x0)
     arr_xk = list(dict(takewhile(lambda param: stopping_criteria(*param), enumerate(iter))).values()) + [next(iter)]
