@@ -48,13 +48,11 @@ def linear(f, x0, tolx, tolf, nmax, delta, dx):
     
     def stopping_criteria(k, x):
         return k < nmax and abs(f(x)) >= tolf and abs(delta(x, f, dx)) >= tolx * abs(x) and abs(dx(x)) > tolf
-    
-    stream = takewhile(lambda xk: stopping_criteria(*xk), enumerate(iterate(lambda xk: xk - delta(xk, f, dx), x0)))
-    arr_xk = [v for _, v in stream]
-    if arr_xk == []:
-        print("nothing has been found")
         
-    return None if arr_xk == [] else arr_xk[-1], len(arr_xk), arr_xk
+    iter = iterate(lambda xk: xk - delta(xk, f, dx), x0)
+    arr_xk = list(dict(takewhile(lambda param: stopping_criteria(*param), enumerate(iter))).values()) + [next(iter)]
+
+    return arr_xk[-1], len(arr_xk), arr_xk
 
 
 def bisection(f, a, b, maxit, tolx, tolf=None):
