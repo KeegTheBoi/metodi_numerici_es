@@ -27,13 +27,13 @@ class FunctionApprox:
     def derivative(self, multiplicity):
         self.derivate = lambdify(self.symbols, sym.diff(self.sym_expr, *self.symbols, multiplicity), np)
 
-    def partial_derivative(self, x_n: str, multiplicity=1, display=False):
+    def partial_derivative(self, x_n: str, multiplicity=1, display=False, latex=False):
         p_diff = sym.diff(self.sym_expr, sym.symbols(x_n), multiplicity)
         
         if display:
             notebook.display(notebook.Latex(r"$\frac{\partial "+self.notation+f"{self.symbols}"+r"}{\partial  "+x_n+r"}= "+f"{sym.latex(p_diff)}"+r"$"))
-        self.derivate = lambdify(sym.symbols(x_n), p_diff, np)
-        return sym.latex(p_diff)
+    
+        return lambdify(sym.symbols(x_n), p_diff, np), sym.latex(p_diff)
 
     def compute(self):
         self.func = self.lambda_map(self.sym_expr)
