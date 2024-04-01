@@ -46,17 +46,24 @@ def non_linear(f, a, b, tolx, maxit, hypo_mid, arrest_cond, tolf=None):
 
 def linear(f, x0, tolx, tolf, nmax, delta, dx):
     
-    
     def stopping_criteria(k, x):
-        
-        cond = any(np.abs(delta(x, f, dx)) >= tolx * np.abs(x)) and any(np.abs(dx(x)) > np.ones(2) * tolf)
-        
-        return k < nmax and abs(f(*x)) >= np.float64(tolf) and cond
+        return k < nmax and abs(f(x)) >= tolf and abs(delta(x, f, dx)) >= tolx * abs(x) and abs(dx(x)) > tolf
         
     iter = iterate(lambda xk: xk - delta(xk, f, dx), x0)
     arr_xk = list(dict(takewhile(lambda param: (stopping_criteria(*param)), enumerate(iter))).values()) + [next(iter)]
 
     return arr_xk[-1], len(arr_xk), arr_xk
+
+def newton_raphson(f, J, x0, tolx, nmax):
+    delta = lambda f, J, X: np.linalg.inv(J(X)) @ (-f(X))
+             
+    def stop_criteria(i, X):
+        return i < nmax and np.any(np.linalg.norm(delta(f, J, X)) > tolx)
+
+    iter = iterate(lambda xk: xk + delta(f, J, xk), x0)
+    arr = list(dict(takewhile(lambda param: stop_criteria(*param), \
+                              enumerate(iter))).values()) + [next(iter)] 
+    return arr[-1], len(arr), arr
 
 
 def bisection(f, a, b, maxit, tolx, tolf=None):
@@ -65,8 +72,9 @@ def bisection(f, a, b, maxit, tolx, tolf=None):
 def regula_falsi(f, a, b, maxit, tolx, given_tolf):
     return non_linear(f, a, b, tolx, maxit, false_mid, over_flow_check, tolf=given_tolf)
 
-def newton(f, x0, tolx, tolf, nmax, dx, fa: FunctionApprox, multiplicity=1):
-    return linear(f, x0, tolx, tolf, nmax, lambda x, f, dx: multiplicity * f(*x) / dx(x), dx)
+def newton(f, x0, tolx, tolf, nmax, fa: FunctionApprox, multiplicity=1):
+    dx = fa.derivate
+    return linear(f, x0, tolx, tolf, nmax, lambda x, f, dx: multiplicity * f(x) / dx(x), dx)
 
 def newton_mod_2(f, x0, tolx, tolf, nmax, fa: FunctionApprox):
     return newton(f, x0, tolx, tolf, nmax, fa, multiplicity=2)

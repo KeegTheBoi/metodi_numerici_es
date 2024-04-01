@@ -20,6 +20,7 @@ class FunctionApprox:
         self.x0 = x0
         self.prev_x = prev_x
         self.notation = notation
+        self.func_latex = f"${sym.latex(self.sym_expr)}$"
         
     def lambda_map(self, expr):
         return lambdify(self.symbols, expr, np)
@@ -33,7 +34,7 @@ class FunctionApprox:
         if display:
             notebook.display(notebook.Latex(r"$\frac{\partial "+self.notation+f"{self.symbols}"+r"}{\partial  "+x_n+r"}= "+f"{sym.latex(p_diff)}"+r"$"))
     
-        return lambdify(sym.symbols(x_n), p_diff, np), sym.latex(p_diff)
+        return lambdify(self.symbols, p_diff, np), sym.latex(p_diff)
 
     def compute(self):
         self.func = self.lambda_map(self.sym_expr)
@@ -49,5 +50,7 @@ class FunctionApprox:
 
     def plot_error(self, method, plotter=plt):
         self.solve_radix(method)
+        
         plotter.semilogy(np.arange(self.i), err_abs(np.array(self.vec_xk), self.real_alfas), "o-")
+        
 
