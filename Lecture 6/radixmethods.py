@@ -54,11 +54,11 @@ def linear(f, x0, tolx, tolf, nmax, delta, dx):
 
     return arr_xk[-1], len(arr_xk), arr_xk
 
-def newton_raphson(f, J, x0, tolx, nmax):
+def newton_raphson(f, J, x0, tolx, tolf, nmax):
     delta = lambda f, J, X: np.linalg.inv(J(X)) @ (-f(X))
              
     def stop_criteria(i, X):
-        return i < nmax and np.any(np.linalg.norm(delta(f, J, X)) > tolx)
+        return i < nmax and np.linalg.norm(delta(f, J, X)) > tolx and np.linalg.norm(f(X)) >= tolf
 
     iter = iterate(lambda xk: xk + delta(f, J, xk), x0)
     arr = list(dict(takewhile(lambda param: stop_criteria(*param), \
