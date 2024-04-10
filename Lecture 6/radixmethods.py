@@ -57,11 +57,13 @@ def linear(f, x0, tolx, tolf, nmax, delta, dx):
 #newton_raphson
 
 #general
-def newton_raphson(f, J, x0, tolx, tolf, nmax, s):         
+def newton_raphson(f, J, x0, tolx, tolf, nmax, s):       
+    
     def stop_criteria(i, X):
-        return i < nmax and np.linalg.norm(s(f, J, X)) > tolx and np.linalg.norm(f(X)) >= tolf and np.linalg.det(J(X)) != 0
+        print i
+        return i < nmax and np.linalg.norm(s(f, J, X)) / np.linalg.norm(X) > tolx and np.linalg.norm(f(X)) >= tolf and np.linalg.det(J(X)) != 0
 
-    iter = iterate(lambda xk: xk + s(f, J, xk), x0)
+    iter = iterate(lambda xk: (xk + s(f, J, xk), np.linalg.norm(s(f, J, xk)) / np.linalg.norm(xk)), x0) 
     arr = list(dict(takewhile(lambda param: stop_criteria(*param), \
                               enumerate(iter))).values()) + [next(iter)] 
     return arr[-1], len(arr), arr
@@ -74,6 +76,9 @@ def newton_raphson_optimized(f, J, x0, tolx, tolf, nmax):
     return newton_raphson(f, J, x0, tolx, tolf, nmax, lambda f, J, X: -np.linalg.solve(J(X), f(X)))
 
 def newton_raphson_chord(f, J, x0, tolx, tolf, nmax):
+    return newton_raphson(f, J, x0, tolx, tolf, nmax, lambda f, J, X: -np.linalg.solve(J(x0), f(X)))
+
+def newton_raphson_sham(f, J, x0, tolx, tolf, nmax):
     return newton_raphson(f, J, x0, tolx, tolf, nmax, lambda f, J, X: -np.linalg.solve(J(x0), f(X)))
     
 

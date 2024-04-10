@@ -1,6 +1,5 @@
 import math
 import numpy as np
-from more_itertools import iterate
 from itertools import takewhile
 from funcutils import FunctionApprox
 
@@ -10,6 +9,12 @@ false_mid = lambda a, b, f: a - f(a) * (b-a) / (f(b) - f(a))
 secure_bound = lambda a, b, tolx, i, maxi, fxk, tolf: abs(b - a) > tolx
 over_flow_check = lambda a, b, tolx, i, maxi, fxk, tolf:  \
     i < maxi and secure_bound(a, b, tolx, i, maxi, fxk, tolf) and abs(fxk) > tolf
+
+
+def iterate(func, start):
+    while True:
+        yield start
+        start = func(*start)
 
 
 def non_linear(f, a, b, tolx, maxit, hypo_mid, arrest_cond, tolf=None):
@@ -57,14 +62,16 @@ def linear(f, x0, tolx, tolf, nmax, delta, dx):
 #newton_raphson
 
 #general
-def newton_raphson(f, J, x0, tolx, tolf, nmax, s):         
+def newton_raphson(f, J, x0, tolx, tolf, nmax, s):       
+    
     def stop_criteria(i, X):
-        return i < nmax and np.linalg.norm(s(f, J, X)) > tolx and np.linalg.norm(f(X)) >= tolf and np.linalg.det(J(X)) != 0
+        X = X[0]
+        return i < nmax and np.linalg.norm(s(f, J, X)) / np.linalg.norm(X) > tolx and np.linalg.norm(f(X)) >= tolf and np.linalg.det(J(X)) != 0
 
-    iter = iterate(lambda xk: xk + s(f, J, xk), x0)
+    iter = iterate(lambda xk, err: (xk + s(f, J, xk), np.linalg.norm(s(f, J, xk)) / np.linalg.norm(xk)), (x0, 1)) 
     arr = list(dict(takewhile(lambda param: stop_criteria(*param), \
                               enumerate(iter))).values()) + [next(iter)] 
-    return arr[-1], len(arr), arr
+    return arr[-1][0], len(arr), [e for _, e in arr]
     
 #variants
 def newton_raphson_teoretical(f, J, x0, tolx, tolf, nmax):
