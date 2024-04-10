@@ -3,7 +3,6 @@ from sympy.utilities.lambdify import lambdify
 import numpy as np
 import matplotlib.pyplot as plt
 import IPython.display as nb
-from mpl_toolkits.mplot3d import Axes3D
 
 
 def display_vector(vector, notation='v', round_n=5):
@@ -35,17 +34,8 @@ def display_matrix(matrix, notation="A(X)"):
     nb.display(nb.Latex(str_build))
 
 def plot_contour(x, y, f, i, label):
-    col=('grey', 'blue', 'red', 'orange', 'yellow')
+    col=('grey', 'blue')
     X, Y = np.meshgrid(x, y)
     ct = plt.contour(X, Y, f(X, Y), levels=0, colors=col[i])
     plt.clabel(ct, inline=True, colors=col[i], fmt=label)
     plt.grid(axis='x')
-
-def plot_3D_projection(x, y, f):
-    X, Y = np.meshgrid(x, y)
-    ax = plt.figure().add_subplot(111, projection='3d')
-    Z = f(X, Y)
-    ax.plot_surface(X, Y, Z, color='blue', alpha = 0.7,
-                linewidth = 0.3, edgecolor = 'black')
-    ax.grid(color='black')
-    
