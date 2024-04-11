@@ -48,9 +48,10 @@ class FunctionApprox:
     def display_func(self):
         notebook.display(notebook.Latex(f"${self.notation}{self.symbols}={sym.latex(self.sym_expr)}$"))
 
-    def plot_error(self, method, plotter=plt, real=None):
+    def plot_error(self, method, plotter=plt, real=None, i=0):
+        col=('grey', 'blue', 'red', 'orange', 'yellow', 'lightgreen', 'green', 'black')
         self.solve_radix(method)
         g = real if real is not None else self.real_alfas
-        plotter.semilogy(np.arange(self.i), err_abs(np.array(self.vec_xk), g), "o-")
+        plotter.semilogy(np.arange(self.i), err_abs(np.array(self.vec_xk), g), "o-", color=col[i])
         
 
