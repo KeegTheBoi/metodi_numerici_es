@@ -83,7 +83,7 @@ def newton_raphson_chord(f, J, x0, tolx, tolf, nmax):
     return newton_raphson(f, J, x0, tolx, tolf, nmax, lambda f, J, X, c, st_xk: -np.linalg.solve(J(x0), f(X)))
 
 def newton_raphson_sham(f, J, x0, tolx, tolf, nmax):
-    return newton_raphson(f, J, x0, tolx, tolf, nmax, lambda f, J, X, c, stored_X: - np.linalg.solve(J(stored_X), f(X)), m=3)
+    return newton_raphson(f, J, x0, tolx, tolf, nmax, lambda f, J, X, c, stored_X: - np.linalg.solve(J(stored_X), f(X)), m=5)
     
 
 

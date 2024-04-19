@@ -20,6 +20,9 @@ def plot_alfa(x, f, title="", radix=None, log=False, plotter=plt):
     plotter.scatter(radix if radix is not None else 0, 0)
     plotter.grid(True)
 
+def display_function(func_expr, varsym=sym.symbols("x")):
+    nb.display(nb.Latex(r"$f"+f"{varsym}"+r"="+f"{sym.latex(func_expr)}"+r"$"))
+
 
 def display_matrix(matrix, notation="A(X)"):
     str_build: str = r"$ "+ notation + r"= \begin{bmatrix}"
@@ -39,3 +42,12 @@ def plot_contour(x, y, f, i, label):
     ct = plt.contour(X, Y, f(X, Y), levels=0, colors=col[i])
     plt.clabel(ct, inline=True, colors=col[i], fmt=label)
     plt.grid(axis='x')
+
+def plot_3D_projection(x, y, f):
+    X, Y = np.meshgrid(x, y)
+    ax = plt.figure().add_subplot(111, projection='3d')
+    Z = f(X, Y)
+    ax.plot_surface(X, Y, Z, color='blue', alpha = 0.7,
+                linewidth = 0.3, edgecolor = 'black')
+    ax.grid(color='black')
+    return ax

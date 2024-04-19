@@ -60,7 +60,7 @@ def linear(f, x0, tolx, tolf, nmax, delta, dx):
 def newton_raphson(f, J, x0, tolx, tolf, nmax, s):       
     
     def stop_criteria(i, X):
-        print i
+        
         return i < nmax and np.linalg.norm(s(f, J, X)) / np.linalg.norm(X) > tolx and np.linalg.norm(f(X)) >= tolf and np.linalg.det(J(X)) != 0
 
     iter = iterate(lambda xk: (xk + s(f, J, xk), np.linalg.norm(s(f, J, xk)) / np.linalg.norm(xk)), x0) 
