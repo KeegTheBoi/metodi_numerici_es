@@ -27,7 +27,7 @@ def Usolve(U,b):
          flag=1
          return x
     # Preallocazione vettore soluzione
-    x=np.zeros((n,1))
+    x=np.zeros(n)
     
     for i in range(n-1,-1,-1):
          s=np.dot(U[i,i+1:n],x[i+1:n]) #scalare=vettore riga * vettore colonna
@@ -35,7 +35,7 @@ def Usolve(U,b):
     
     if flag != 0:
         raise ValueError('Matrice senza soluzioni')
-     
+    
     return x
 
 def Lsolve(L,b):
@@ -64,7 +64,7 @@ def Lsolve(L,b):
          flag=1
          return x
     # Preallocazione vettore soluzione
-    x=np.zeros((n,1))
+    x=np.zeros(n)
     
     for i in range(n):
          s=np.dot(L[i,:i],x[:i]) #scalare=vettore riga * vettore colonna
@@ -72,5 +72,5 @@ def Lsolve(L,b):
       
     if flag != 0:
         raise ValueError('Matrice senza soluzioni')
-     
+    
     return x
