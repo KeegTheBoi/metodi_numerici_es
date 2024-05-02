@@ -5,14 +5,17 @@ import matplotlib.pyplot as plt
 import IPython.display as nb
 
 
-def display_vector(vector, notation='v', round_n=5):
-    str_build: str = r"$ \mathbf{"+ notation + r"} = \begin{bmatrix}"
+def display_vector(vector, notation='v', round_n=5, center=False):
+    dollar = r'$'
+    if center:
+        dollar = r'$$'
+    str_build: str = f"{dollar}"+r" \mathbf{"+ notation + r"} = \begin{bmatrix}"
     rows = len(vector)
     for i in range(rows):
         str_build += str(round(vector[i], round_n))
         str_build += "" if i == (rows - 1)  else r" \\ "
     
-    str_build += r"\end{bmatrix}$"
+    str_build += r"\end{bmatrix}"+f"{dollar}"
     nb.display(nb.Latex(str_build))
 
 def plot_alfa(x, f, title="", radix=None, log=False, plotter=plt):
@@ -24,8 +27,12 @@ def display_function(func_expr, varsym=sym.symbols("x")):
     nb.display(nb.Latex(r"$f"+f"{varsym}"+r"="+f"{sym.latex(func_expr)}"+r"$"))
 
 
-def display_matrix(matrix, notation="A(X)", round_n=5):
-    str_build: str = r"$ "+ notation + r"= \begin{bmatrix}"
+def display_matrix(matrix, notation="A(X)", round_n=5, center=False):
+    dollar = r'$'
+    if center:
+        dollar = r'$$'
+        
+    str_build: str = f"{dollar} "+ notation + r"= \begin{bmatrix}"
     rows, cols = matrix.shape
     for i in range(rows):
         for j in range(cols):
@@ -33,8 +40,9 @@ def display_matrix(matrix, notation="A(X)", round_n=5):
             str_build += "" if j == (cols - 1)  else r" & "
         str_build += r" \\ "
     
-    str_build += r"\end{bmatrix}$"
+    str_build += r"\end{bmatrix}"+f'{dollar}'
     nb.display(nb.Latex(str_build))
+    nb.display(nb.Markdown('\n'))
 
 def plot_contour(x, y, f, i, label):
     col=('grey', 'blue')
