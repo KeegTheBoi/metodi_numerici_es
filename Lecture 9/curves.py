@@ -22,7 +22,6 @@ def chached_countor(sol, mesh, Z, f, mat):
 
 def plot_3D_projection(X, Y, Z, f, mat):
     ax = plt.figure().add_subplot(111, projection='3d')
-    ax.plot_surface(X, Y, Z, color='blue', alpha = 0.7,
-                linewidth = 0.3, edgecolor = 'black')
+    ax.plot_surface(X,Y,Z,cmap=plt.cm.viridis)
     ax.grid(color='black')
     return ax

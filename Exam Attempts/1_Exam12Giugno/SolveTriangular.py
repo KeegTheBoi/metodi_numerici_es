@@ -68,7 +68,6 @@ def Lsolve(L,b):
     
     for i in range(n):
          s=np.dot(L[i,:i],x[:i]) #scalare=vettore riga * vettore colonna
-        print(x)
          x[i]=(b[i]-s)/L[i,i]
       
     if flag != 0:
