@@ -4,6 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import IPython.display as nb
 
+markdown = lambda str: nb.display(nb.Markdown(str))
+latex = lambda str: nb.display(nb.Latex(str))
+
 
 def display_vector(vector, notation='v', round_n=5, center=False):
     dollar = r'$'
@@ -23,8 +26,11 @@ def plot_alfa(x, f, title="", radix=None, log=False, plotter=plt):
     plotter.scatter(radix if radix is not None else 0, 0)
     plotter.grid(True)
 
-def display_function(func_expr, varsym=sym.symbols("x")):
-    nb.display(nb.Latex(r"$f"+f"{varsym}"+r"="+f"{sym.latex(func_expr)}"+r"$"))
+def display_function(func_expr, varsym=sym.symbols("x"), f='f'):
+    
+    a_parent = "("
+    l_parent = ")"
+    latex(f"${f}{a_parent}"+f"{varsym}"+f"{l_parent}="+f"{sym.latex(func_expr)}"+r"$")
 
 
 def display_matrix(matrix, notation="A(X)", round_n=5, center=False):
