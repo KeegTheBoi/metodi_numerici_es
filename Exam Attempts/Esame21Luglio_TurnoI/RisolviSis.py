@@ -15,7 +15,7 @@ def Lsolve(L,b):
         print('errore: matrice non quadrata')
         flag=1
         x=[]
-        return x, flag
+        return x
     
      # Test singolarita'
     
@@ -23,17 +23,17 @@ def Lsolve(L,b):
          print('el. diag. nullo - matrice triangolare inferiore')
          x=[]
          flag=1
-         return x, flag
+         return x
     
     # Preallocazione vettore soluzione
-    x=np.zeros((n,1))
+    x=np.zeros((n,))
     
     for i in range(n):
          s=np.dot(L[i,:i],x[:i]) #scalare=vettore riga * vettore colonna
          x[i]=(b[i]-s)/L[i,i]
       
      
-    return x,flag
+    return x
 
 def Usolve(U,b):
     
@@ -53,20 +53,20 @@ def Usolve(U,b):
         print('errore: matrice non quadrata')
         flag=1
         x=[]
-        return x, flag
+        return x
     
      # Test singolarita'
     if np.all(np.diag(U)) != True:
          print('el. diag. nullo - matrice triangolare superiore')
          x=[]
          flag=1
-         return x, flag
+         return x
     # Preallocazione vettore soluzione
-    x=np.zeros((n,1))
+    x=np.zeros((n,))
     
     for i in range(n-1,-1,-1):
          s=np.dot(U[i,i+1:n],x[i+1:n]) #scalare=vettore riga * vettore colonna
          x[i]=(b[i]-s)/U[i,i]
       
      
-    return x,flag
+    return x
