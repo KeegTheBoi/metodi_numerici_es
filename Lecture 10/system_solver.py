@@ -8,7 +8,7 @@ def LU_solve(A, b):
 
 def cholensky_solve(A, b):
     L = lin.cholesky(A)
-    return Usolve(L, Lsolve(L, b))
+    return Usolve(L.T, Lsolve(L, b))
 
 def QR_solve(A, b):
     Q, R = scipy.linalg.qr(A)

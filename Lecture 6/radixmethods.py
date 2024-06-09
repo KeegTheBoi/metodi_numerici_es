@@ -63,7 +63,7 @@ def newton_raphson(f, J, x0, tolx, tolf, nmax, s):
         
         return i < nmax and np.linalg.norm(s(f, J, X)) / np.linalg.norm(X) > tolx and np.linalg.norm(f(X)) >= tolf and np.linalg.det(J(X)) != 0
 
-    iter = iterate(lambda xk: (xk + s(f, J, xk), np.linalg.norm(s(f, J, xk)) / np.linalg.norm(xk)), x0) 
+    iter = iterate(lambda xk: xk + s(f, J, xk), x0) 
     arr = list(dict(takewhile(lambda param: stop_criteria(*param), \
                               enumerate(iter))).values()) + [next(iter)] 
     return arr[-1], len(arr), arr
